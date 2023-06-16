@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "smsdk_ext.h"
@@ -6,9 +7,23 @@
 
 #include "maxminddb.h"
 #include "GeoIPCity.h"
-#include "sh_string.h"
 
-#define xTo(Var, Type)              ((Type)(Var))
+#include "sh_string.h"
+#include "sh_vector.h"
+
+#ifdef WIN32
+
+#define grConExpr constexpr
+#define grNoExc noexcept
+
+#else
+
+#define grConExpr
+#define grNoExc noexcept
+
+#endif
+
+#define xTo(Var, Type)              ((Type) (Var))
 
 #define grInvalid                   ("N/ A")
 #define grLibrary                   ("GeoResolver")
@@ -32,14 +47,17 @@
 #define GR_GEO_DB_ISP_LITE          (1 << 4)    // GeoLiteISP.dat
 #define GR_GEO_DB_ISP_PAID          (1 << 5)    // GeoIPISP.dat
 
+#define GR_GEO_DB_ISP2_LITE         (1 << 6)    // GeoLite2-ASN.mmdb
+#define GR_GEO_DB_ISP2_PAID         (1 << 7)    // GeoIP2-ISP.mmdb
+
 #define GR_GEO_ORDER_LITE_FIRST     (0)
 #define GR_GEO_ORDER_PAID_FIRST     (1)
 
-class GeoResolver : public SDKExtension
+class GeoResolver : public ::SDKExtension
 {
 public:
 
-    virtual bool SDK_OnLoad(char*, unsigned int, bool);
+    virtual bool SDK_OnLoad(char*, unsigned int, bool) grNoExc;
 
-    virtual void SDK_OnUnload();
+    virtual void SDK_OnUnload() grNoExc;
 };

@@ -10,3 +10,6 @@ To update the files properly, while the game server is running.
 
     GeoLiteISP.dat
     GeoIPISP.dat
+
+    GeoLite2-ASN.mmdb
+    GeoIP2-ISP.mmdb

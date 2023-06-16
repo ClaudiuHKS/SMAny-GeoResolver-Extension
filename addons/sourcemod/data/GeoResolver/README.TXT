@@ -9,3 +9,6 @@ Files that can be inside this folder.
 
     GeoLiteISP.dat
     GeoIPISP.dat
+
+    GeoLite2-ASN.mmdb
+    GeoIP2-ISP.mmdb
