@@ -1,25 +1,26 @@
-#include <sourcemod>
-#include <GeoResolver>
 
-public Plugin myinfo =
+#include    <   sourcemod       >
+#include    <   GeoResolver     >
+
+public  Plugin  myinfo  =
 {
-    name            =   "GeoResolver: Connect Announcer"                            , \
-    author          =   "Hattrick HKS (claudiuhks)"                                 , \
-    description     =   "Prints Players' Geographical Information While Joining"    , \
-    version         =   __DATE__                                                    , \
-    url             =   "https://forums.alliedmods.net/showthread.php?t=267805"     ,
+    name            =   "GeoResolver: Join Announcer"                           ,
+    author          =   "Hattrick HKS (claudiuhks)"                             ,
+    description     =   "Prints Users' Geographical Information While Joining"  ,
+    version         =   __DATE__                                                ,
+    url             =   "https://forums.alliedmods.net/showthread.php?t=267805" ,
 };
 
 /**
- * PRINTS   " \x01Player\x04 HATTRİCK CARAMEL® HACK CS.MONEY\x01 joined."
+ * PRINTS       " \x01Player\x04 HATTRİCK CARAMEL® HACK CS.MONEY\x01 joined."
  *
- * IF THE   GEOGRAPHICAL    INFORMATION HAS NOT BEEN DETECTED
+ * IF   THE     GEOGRAPHICAL    INFORMATION HAS NOT BEEN DETECTED
  *
- * UNCOMMENT    - '//'      IF YES
- * COMMENT      + '//'      IF NO
+ * UNCOMMENT    - '//'      IF  YES
+ * COMMENT      + '//'      IF  NO
  */
 
-#define     SHOW_EVEN_IF_NOT_DETECTED
+#define     SHOW_EVEN_IF_NOT_DETECTED       /// Show?
 
 #define     SHOW_PLAYER_DISCONNECT_CHAT     /// Show?
 #define     SHOW_PLAYER_TEAM_CHAT           /// Show?
@@ -30,212 +31,300 @@ public Plugin myinfo =
 
 #define     CHAT_SPAM_DELAY     4.000000
 
-static float g_fStamp = 0.000000;
+static float g_fStamp =         0.000000;
+
+static EngineVersion g_xEngVs = Engine_Unknown;
 
 public void OnPluginStart()
 {
-    HookEventEx("player_disconnect",            OnPlrDisconnect_Pre,        EventHookMode_Pre);
-    HookEventEx("player_disconnect_client",     OnPlrDisconnect_Pre,        EventHookMode_Pre);
-    HookEventEx("player_client_disconnect",     OnPlrDisconnect_Pre,        EventHookMode_Pre);
+    g_xEngVs =  GetEngineVersion();
 
-    HookEventEx("player_connect",               OnPlrConnect_Pre,           EventHookMode_Pre);
-    HookEventEx("player_connect_client",        OnPlrConnect_Pre,           EventHookMode_Pre);
-    HookEventEx("player_client_connect",        OnPlrConnect_Pre,           EventHookMode_Pre);
+    HookEventEx ("player_disconnect",           OnUserLeave_Pre,    EventHookMode_Pre);
+    HookEventEx ("player_disconnect_client",    OnUserLeave_Pre,    EventHookMode_Pre);
+    HookEventEx ("player_client_disconnect",    OnUserLeave_Pre,    EventHookMode_Pre);
 
-    HookEventEx("player_team",                  OnPlrTeam_Pre,              EventHookMode_Pre);
+    HookEventEx ("player_connect",              OnUserJoin_Pre,     EventHookMode_Pre);
+    HookEventEx ("player_connect_client",       OnUserJoin_Pre,     EventHookMode_Pre);
+    HookEventEx ("player_client_connect",       OnUserJoin_Pre,     EventHookMode_Pre);
 
-    g_fStamp = 0.000000;
+    HookEventEx ("player_team",                 OnUserTeam_Pre,     EventHookMode_Pre);
+
+    g_fStamp =  0.000000;
 }
 
 public void OnMapStart()
 {
-    g_fStamp = 0.000000;
+    g_fStamp =  0.000000;
 }
 
 public void OnMapEnd()
 {
-    g_fStamp = 0.000000;
+    g_fStamp =  0.000000;
+
+    GeoRT_Free  ();
 }
 
-public void OnClientPutInServer(int nClient)
+public bool OnClientConnect(int nUser, char[] szMsg, int nMsgMaxLen)
 {
-    if (nClient >= 1 && nClient <= MaxClients)
+    static char szIpAddr[PLATFORM_MAX_PATH] = { EOS, ... };
+
+    if (nUser > 0 && nUser <= MaxClients)
     {
-        CreateTimer(GetRandomFloat(2.250000, 4.500000)  , \
-                    displayJoinInfo                     , \
-                    GetClientUserId(nClient)            , \
-                    TIMER_FLAG_NO_MAPCHANGE             );
+        if (GetClientIP(nUser, szIpAddr, sizeof (szIpAddr), true))
+        {
+            if (StrContains(szIpAddr, ".", false) != -1)
+            {
+                GeoRT_Add(szIpAddr);
+            }
+        }
+    }
+
+    return true;
+}
+
+public void OnClientPutInServer(int nUser)
+{
+    if (nUser > 0 && nUser <= MaxClients)
+    {
+        if (IsClientConnected(nUser))
+        {
+            CreateTimer(GetRandomFloat(2.000000, 4.000000), Timer_Join, GetClientUserId(nUser), TIMER_FLAG_NO_MAPCHANGE);
+        }
     }
 }
 
-public Action displayJoinInfo(Handle hTimer, any nClientUserId)
+public Action Timer_Join(Handle xTimer, any nUserId)
 {
-    static int      nClient                                 =                       0;
+    static int nUser = 0;
+    static float fEngTime = 0.000000;
+    static bool bIsp = false, bCountry = false, bCity = false;
+    static char szCountry[PLATFORM_MAX_PATH] = { EOS, ... }, szCity[PLATFORM_MAX_PATH] = { EOS, ... },
+        szIsp[PLATFORM_MAX_PATH] = { EOS, ... }, szIpAddr[PLATFORM_MAX_PATH] = { EOS, ... };
 
-    static float    fEngTime                                =                       0.000000;
-
-    static bool     bIsp                                    =                       false, \
-                    bCountry                                =                       false, \
-                    bCity                                   =                       false;
-
-    static char     szCountry   [PLATFORM_MAX_PATH]         =                       "", \
-                    szCity      [PLATFORM_MAX_PATH]         =                       "", \
-                    szIsp       [PLATFORM_MAX_PATH]         =                       "", \
-                    szIpAddr    [PLATFORM_MAX_PATH]         =                       "";
-
-    fEngTime                                                =                       GetEngineTime();
-
-    nClient                                                 =                       GetClientOfUserId(nClientUserId);
-
-    if (fEngTime            >   g_fStamp                                            && \
-        nClient             >=  1                                                   && \
-        nClient             <=  MaxClients                                          && \
-        IsClientConnected       (nClient)                                           && \
-        IsClientInGame          (nClient)                                           && \
-        !IsFakeClient           (nClient)                                           && \
-        !IsClientSourceTV       (nClient)                                           && \
-        !IsClientReplay         (nClient)                                           && \
-        !IsClientInKickQueue    (nClient)                                           && \
-        !IsClientTimingOut      (nClient)                                           && \
-        GetClientIP             (nClient,   szIpAddr,   sizeof(szIpAddr),   true)   )
+    if (nUserId > -1 && (fEngTime = GetEngineTime()) > g_fStamp && (nUser = GetClientOfUserId(nUserId)) > 0 && nUser <= MaxClients && IsClientConnected(nUser) &&
+        IsClientInGame(nUser) && !IsFakeClient(nUser) && !IsClientSourceTV(nUser) && !IsClientReplay(nUser) && !IsClientInKickQueue(nUser) && !IsClientTimingOut(nUser) &&
+        GetClientIP(nUser, szIpAddr, sizeof (szIpAddr), true) && -1 != StrContains(szIpAddr, ".", false))
     {
-        GeoR_Country            (szIpAddr,  szCountry,  sizeof(szCountry));
-        GeoR_City               (szIpAddr,  szCity,     sizeof(szCity));
-        GeoR_ISP                (szIpAddr,  szIsp,      sizeof(szIsp));
+        GeoRT_Country       (szIpAddr,          szCountry,  sizeof (szCountry));
+        GeoRT_City          (szIpAddr,          szCity,     sizeof (szCity));
+        GeoRT_ISP           (szIpAddr,          szIsp,      sizeof (szIsp));
 
-        bIsp        =           (strcmp(szIsp,          "N/ A") == 0)       ? false :       true;
-        bCountry    =           (strcmp(szCountry,      "N/ A") == 0)       ? false :       true;
-        bCity       =           (strcmp(szCity,         "N/ A") == 0)       ? false :       true;
+        bIsp        =       (strcmp(szIsp,      "N/ A",     false) == 0) ? false : true;
+        bCountry    =       (strcmp(szCountry,  "N/ A",     false) == 0) ? false : true;
+        bCity       =       (strcmp(szCity,     "N/ A",     false) == 0) ? false : true;
 
-        if (bCountry        &&      bCity       &&      bIsp)
+        if (!bCountry)
         {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",        nClient,    szCity,     szCountry);
+            GeoRT_Continent (szIpAddr,          szCountry,  sizeof (szCountry));
+            {
+                bCountry =  (strcmp(szCountry,  "N/ A",     false) == 0) ? false : true;
+            }
         }
 
-        else if (bCountry   &&      bCity)
+        if (!bCity)
         {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",        nClient,    szCity,     szCountry);
+            GeoRT_Region    (szIpAddr,          szCity,     sizeof (szCity));
+            {
+                bCity =     (strcmp(szCity,     "N/ A",     false) == 0) ? false : true;
+            }
         }
 
-        else if (bCountry   &&      bIsp)
+        switch (g_xEngVs)
         {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].",     nClient,    szCountry,  szIsp);
-        }
+            case Engine_CSGO:
+            {
+                if (bCountry        &&      bCity       &&      bIsp)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",    nUser, szCity,      szCountry);
 
-        else if (bCity      &&      bIsp)
-        {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].",     nClient,    szCity,     szIsp);
-        }
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
 
-        else if (bCountry)
-        {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                    nClient,    szCountry);
-        }
+                else if (bCountry   &&      bCity)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",    nUser, szCity,      szCountry);
 
-        else if (bCity)
-        {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                    nClient,    szCity);
-        }
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
 
-        else if (bIsp)
-        {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined [\x05 %s\x01 ].",                     nClient,    szIsp);
-        }
+                else if (bCountry   &&      bIsp)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].", nUser, szCountry,   szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCity      &&      bIsp)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].", nUser, szCity,      szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCountry)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                nUser, szCountry);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCity)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                nUser, szCity);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bIsp)
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined [\x05 %s\x01 ].",                 nUser, szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
 
 #if     defined     SHOW_EVEN_IF_NOT_DETECTED
 
-        else
-        {
-            PrintToChatAll(" \x01Player\x04 %N\x01 joined.",                                    nClient);
-        }
+                else
+                {
+                    PrintToChatAll(" \x01Player\x04 %N\x01 joined.",                                nUser);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
 
 #endif
 
-        g_fStamp    =       fEngTime        +               CHAT_SPAM_DELAY;
-    }
-}
+            }
 
-public void OnPlrConnect_Pre(Handle hEv,    const char[]    szEvName,   bool bEvNoBC)
-{
-    if (hEv         !=              INVALID_HANDLE)
-    {
-        if (bEvNoBC ==              false)
-        {
-            SetEventBroadcast(hEv,  true);
+            default:
+            {
+                if (bCountry        &&      bCity       &&      bIsp)
+                {
+                    PrintToChatAll("Player %N joined from %s, %s.",     nUser, szCity,      szCountry);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCountry   &&      bCity)
+                {
+                    PrintToChatAll("Player %N joined from %s, %s.",     nUser, szCity,      szCountry);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCountry   &&      bIsp)
+                {
+                    PrintToChatAll("Player %N joined from %s [ %s ].",  nUser, szCountry,   szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCity      &&      bIsp)
+                {
+                    PrintToChatAll("Player %N joined from %s [ %s ].",  nUser, szCity,      szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCountry)
+                {
+                    PrintToChatAll("Player %N joined from %s.",         nUser, szCountry);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bCity)
+                {
+                    PrintToChatAll("Player %N joined from %s.",         nUser, szCity);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+                else if (bIsp)
+                {
+                    PrintToChatAll("Player %N joined [ %s ].",          nUser, szIsp);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+#if     defined     SHOW_EVEN_IF_NOT_DETECTED
+
+                else
+                {
+                    PrintToChatAll("Player %N joined.",                 nUser);
+
+                    g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                }
+
+#endif
+
+            }
         }
     }
+
+    return Plugin_Continue;
 }
 
-public void OnPlrDisconnect_Pre(Handle hEv, const char[]    szEvName,   bool bEvNoBC)
+public Action OnUserJoin_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
+{
+    if (xEv != INVALID_HANDLE)
+    {
+        if (bEvNoBC == false)
+        {
+            SetEventBroadcast(xEv, true);
+        }
+    }
+
+    return Plugin_Continue;
+}
+
+public Action OnUserLeave_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
 {
 
 #if defined SHOW_PLAYER_DISCONNECT_CHAT
 
-    static Handle hPack                         =   INVALID_HANDLE;
+    static Handle hPack = INVALID_HANDLE;
+    static char szName[PLATFORM_MAX_PATH] = { EOS, ... }, szReason[PLATFORM_MAX_PATH] = { EOS, ... }, szRandom[PLATFORM_MAX_PATH] = { EOS, ... };
 
-    static char szName[PLATFORM_MAX_PATH]       =   { 0, ... };
-    static char szReason[PLATFORM_MAX_PATH]     =   { 0, ... };
-    static char szRandom[PLATFORM_MAX_PATH]     =   { 0, ... };
-
-    static bool bGenerated                      =   false;
-
-    if (bGenerated == false)
+    if (EOS == szRandom[0])
     {
-        bGenerated = true;
-
-        const int nRandomStringLen = 16;
-
-        for (int nIter = 0; nIter < nRandomStringLen; nIter++)
-        {
-            switch (GetRandomInt(0, 2))
-            {
-                case 0:
-                {
-                    Format(szRandom, sizeof (szRandom), "%s%c", szRandom, GetRandomInt('a', 'z'));
-                }
-
-                case 1:
-                {
-                    Format(szRandom, sizeof (szRandom), "%s%c", szRandom, GetRandomInt('A', 'Z'));
-                }
-
-                case 2:
-                {
-                    Format(szRandom, sizeof (szRandom), "%s%c", szRandom, GetRandomInt('0', '9'));
-                }
-            }
-        }
-
-        szRandom[nRandomStringLen] = '\0';
+        FormatEx(szRandom, sizeof (szRandom), "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",
+            GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'), GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'),
+            GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'), GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'),
+            GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'), GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'),
+            GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'), GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'),
+            GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'), GetRandomInt('A', 'Z'), GetRandomInt('0', '9'), GetRandomInt('a', 'z'));
     }
 
 #endif
 
-    if (hEv         !=                  INVALID_HANDLE)
+    if (xEv != INVALID_HANDLE)
     {
-        if (bEvNoBC ==                  false)
+        if (bEvNoBC == false)
         {
-            SetEventBroadcast(hEv,      true);
+            SetEventBroadcast(xEv, true);
         }
 
 #if defined SHOW_PLAYER_DISCONNECT_CHAT
 
-        GetEventString(hEv, "name", szName, sizeof (szName), szRandom);
-
-        if (strcmp(szName, szRandom, true))
+        GetEventString(xEv, "name", szName, sizeof (szName), szRandom);
         {
-            GetEventString(hEv, "reason", szReason, sizeof (szReason), szRandom);
-
-            if (strcmp(szReason, szRandom, true))
+            if (strcmp(szName, szRandom, false))
             {
-                hPack       =   CreateDataPack();
-
-                if (hPack   !=  INVALID_HANDLE)
+                GetEventString(xEv, "reason", szReason, sizeof (szReason), szRandom);
                 {
-                    WritePackString(hPack, szName);
-                    WritePackString(hPack, szReason);
+                    if (strcmp(szReason, szRandom, false))
+                    {
+                        hPack = CreateDataPack();
+                        {
+                            if (hPack != INVALID_HANDLE)
+                            {
+                                WritePackString(hPack, szName);
+                                WritePackString(hPack, szReason);
 
-                    CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Left, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Leave, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -243,45 +332,48 @@ public void OnPlrDisconnect_Pre(Handle hEv, const char[]    szEvName,   bool bEv
 #endif
 
     }
+
+    return Plugin_Continue;
 }
 
-public void OnPlrTeam_Pre(Handle hEv, const char[]    szEvName,   bool bEvNoBC)
+public Action OnUserTeam_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
 {
 
 #if defined SHOW_PLAYER_TEAM_CHAT
 
-    static Handle hPack         =   INVALID_HANDLE;
-
-    static int nClientUserId    =   0;
-    static int nTeam            =   0;
+    static Handle hPack = INVALID_HANDLE;
+    static int nUserId = 0, nTeam = 0;
 
 #endif
 
-    if (hEv                     !=  INVALID_HANDLE)
+    if (xEv != INVALID_HANDLE)
     {
-        if (bEvNoBC             ==  false)
+        if (bEvNoBC == false)
         {
-            SetEventBroadcast(hEv,  true);
+            SetEventBroadcast(xEv, true);
         }
 
 #if defined SHOW_PLAYER_TEAM_CHAT
 
-        nClientUserId = GetEventInt(hEv, "userid", -8192);
-
-        if (nClientUserId != -8192)
+        nUserId = GetEventInt(xEv, "userid", -16384);
         {
-            nTeam = GetEventInt(hEv, "team", 0);
-
-            if (nTeam > 0)
+            if (nUserId > -1)
             {
-                hPack       =   CreateDataPack();
-
-                if (hPack   !=  INVALID_HANDLE)
+                nTeam = GetEventInt(xEv, "team", -16384);
                 {
-                    WritePackCell(hPack, nClientUserId);
-                    WritePackCell(hPack, nTeam);
+                    if (nTeam > 0)
+                    {
+                        hPack = CreateDataPack();
+                        {
+                            if (hPack != INVALID_HANDLE)
+                            {
+                                WritePackCell(hPack, nUserId);
+                                WritePackCell(hPack, nTeam);
 
-                    CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_TeamJoin, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Team, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -289,114 +381,275 @@ public void OnPlrTeam_Pre(Handle hEv, const char[]    szEvName,   bool bEvNoBC)
 #endif
 
     }
+
+    return Plugin_Continue;
 }
 
 #if defined SHOW_PLAYER_TEAM_CHAT
 
-public Action Timer_TeamJoin(Handle hTimer, any hPack)
+public Action Timer_Team(Handle xTimer, any hPack)
 {
-    static int nClientUserId    =   0;
-    static int nClient          =   0;
-    static int nTeam            =   0;
+    static int nUserId = 0, nUser = 0, nTeam = 0;
+    static char szIpAddr[PLATFORM_MAX_PATH] = { EOS, ... };
+    static float fEngTime = 0.0;
 
-    static float fEngTime       =   0.0;
-
-    fEngTime                    =   GetEngineTime();
-
-    if (fEngTime > g_fStamp)
+    if (hPack != INVALID_HANDLE)
     {
-        if (hPack != INVALID_HANDLE)
+        if ((fEngTime = GetEngineTime()) > g_fStamp)
         {
             ResetPack(hPack);
-
-            nClientUserId = ReadPackCell(hPack);
-
-            nClient = GetClientOfUserId(nClientUserId);
-
-            if (nClient >= 1 && nClient <= MaxClients)
             {
-                if (IsClientConnected(nClient) && IsClientInGame(nClient))
+                if ((nUserId = ReadPackCell(hPack)) > -1)
                 {
-                    nTeam = ReadPackCell(hPack);
-
-                    switch (nTeam)
+                    if ((nUser = GetClientOfUserId(nUserId)) > 0 && nUser <= MaxClients)
                     {
-                        case 1:
+                        if (IsClientConnected(nUser) && IsClientInGame(nUser) && !IsFakeClient(nUser) && !IsClientSourceTV(nUser) &&
+                            !IsClientReplay(nUser) && !IsClientInKickQueue(nUser) && !IsClientTimingOut(nUser) &&
+                            GetClientIP(nUser, szIpAddr, sizeof (szIpAddr), true) && -1 != StrContains(szIpAddr, ".", false))
                         {
-                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x08 spectator\x01.",            nClient);
+                            if ((nTeam = ReadPackCell(hPack)) > 0)
+                            {
+                                if (g_xEngVs == Engine_CSGO)
+                                {
+                                    switch (nTeam)
+                                    {
+                                        case 1:
+                                        {
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x08 SPECTATOR\x01.",            nUser);
 
-                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
-                        }
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
 
-                        case 2:
-                        {
-                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x07 terrorist\x01.",            nClient);
+                                        case 2:
+                                        {
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x07 TERRORIST\x01.",            nUser);
 
-                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
-                        }
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
 
-                        case 3:
-                        {
-                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x0B counter terrorist\x01.",    nClient);
+                                        case 3:
+                                        {
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x0B COUNTER TERRORIST\x01.",    nUser);
 
-                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+                                    }
+                                }
+
+                                else if (g_xEngVs == Engine_CSS)
+                                {
+                                    switch (nTeam)
+                                    {
+                                        case 1:
+                                        {
+                                            PrintToChatAll("Player %N became a SPECTATOR.",         nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 2:
+                                        {
+                                            PrintToChatAll("Player %N became a TERRORIST.",         nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 3:
+                                        {
+                                            PrintToChatAll("Player %N became a COUNTER TERRORIST.", nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+                                    }
+                                }
+
+                                else if (g_xEngVs == Engine_DODS)
+                                {
+                                    switch (nTeam)
+                                    {
+                                        case 1:
+                                        {
+                                            PrintToChatAll("Player %N became a SPECTATOR.",     nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 2:
+                                        {
+                                            PrintToChatAll("Player %N joined the US ARMY.",     nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 3:
+                                        {
+                                            PrintToChatAll("Player %N joined the WEHRMACHT.",   nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+                                    }
+                                }
+
+                                else
+                                {
+                                    switch (nTeam)
+                                    {
+                                        case 1:
+                                        {
+                                            PrintToChatAll("Player %N became a SPECTATOR.", nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 2:
+                                        {
+                                            PrintToChatAll("Player %N joined the TEAM #1.", nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+
+                                        case 3:
+                                        {
+                                            PrintToChatAll("Player %N joined the TEAM #2.", nUser);
+
+                                            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+    return Plugin_Continue;
 }
 
 #endif
 
 #if defined SHOW_PLAYER_DISCONNECT_CHAT
 
-public Action Timer_Left(Handle hTimer,         any hPack)
+public Action Timer_Leave(Handle xTimer, any hPack)
 {
-    static char szName[PLATFORM_MAX_PATH]       =   { 0, ... };
-    static char szReason[PLATFORM_MAX_PATH]     =   { 0, ... };
-    static char szNewReason[PLATFORM_MAX_PATH]  =   { 0, ... };
+    static char szName[PLATFORM_MAX_PATH] = { EOS, ... }, szReason[PLATFORM_MAX_PATH] = { EOS, ... }, szNewReason[PLATFORM_MAX_PATH] = { EOS, ... };
+    static float fEngTime = 0.0;
+    static int nIter = 0, nReasonLen = 0, nNewReasonLen = 0;
 
-    static float fEngTime                       =   0.0;
-
-    static int nIter                            =   0;
-    static int nNewReasonLen                    =   0;
-
-    fEngTime                                    =   GetEngineTime();
-
-    if (fEngTime > g_fStamp)
+    if (hPack != INVALID_HANDLE)
     {
-        if (hPack != INVALID_HANDLE)
+        if ((fEngTime = GetEngineTime()) > g_fStamp)
         {
             ResetPack(hPack);
-
-            ReadPackString(hPack, szName,   sizeof (szName));
-            ReadPackString(hPack, szReason, sizeof (szReason));
-
-            nNewReasonLen = 0;
-
-            for (nIter = 0; nIter < strlen(szReason); nIter++)
             {
-                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]))
+                ReadPackString(hPack, szName,   sizeof (szName));
+                ReadPackString(hPack, szReason, sizeof (szReason));
+
+                if (Engine_CSGO == g_xEngVs)
                 {
-                    szNewReason[nNewReasonLen] = CharToLower(szReason[nIter]);
+                    switch ((nReasonLen = strlen(szReason)))
+                    {
+                        case 0:
+                        {
+                            PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
+                        }
 
-                    nNewReasonLen++;
+                        default:
+                        {
+                            for (nIter = 0, nNewReasonLen = 0; nIter < nReasonLen; nIter++)
+                            {
+                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]))
+                                {
+                                    szNewReason[nNewReasonLen++] = CharToLower(szReason[nIter]);
+                                }
+                            }
+
+                            if (nNewReasonLen > 0)
+                            {
+                                szNewReason[nNewReasonLen] = EOS;
+                                {
+                                    ReplaceString(szNewReason, sizeof (szNewReason), "  ", " ", false);
+                                    {
+                                        TrimString(szNewReason);
+                                        {
+                                            if (strlen(szNewReason) > 0)
+                                            {
+                                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away,\x09 %s\x01.", szName, szNewReason);
+                                            }
+
+                                            else
+                                            {
+                                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else
+                            {
+                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
+                            }
+                        }
+                    }
                 }
+
+                else
+                {
+                    switch ((nReasonLen = strlen(szReason)))
+                    {
+                        case 0:
+                        {
+                            PrintToChatAll("Player %s flew away.", szName);
+                        }
+
+                        default:
+                        {
+                            for (nIter = 0, nNewReasonLen = 0; nIter < nReasonLen; nIter++)
+                            {
+                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]))
+                                {
+                                    szNewReason[nNewReasonLen++] = CharToLower(szReason[nIter]);
+                                }
+                            }
+
+                            if (nNewReasonLen > 0)
+                            {
+                                szNewReason[nNewReasonLen] = EOS;
+                                {
+                                    ReplaceString(szNewReason, sizeof (szNewReason), "  ", " ", false);
+                                    {
+                                        TrimString(szNewReason);
+                                        {
+                                            if (strlen(szNewReason) > 0)
+                                            {
+                                                PrintToChatAll("Player %s flew away, %s.", szName, szNewReason);
+                                            }
+
+                                            else
+                                            {
+                                                PrintToChatAll("Player %s flew away.", szName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else
+                            {
+                                PrintToChatAll("Player %s flew away.", szName);
+                            }
+                        }
+                    }
+                }
+
+                g_fStamp = fEngTime + CHAT_SPAM_DELAY;
             }
-
-            szNewReason[nNewReasonLen] = '\0';
-
-            ReplaceString(szNewReason, sizeof (szNewReason), "  ", " ", true);
-
-            TrimString(szNewReason);
-
-            PrintToChatAll(" \x01Player\x05 %s\x01 left,\x09 %s\x01.", szName, szNewReason);
-
-            g_fStamp = fEngTime + CHAT_SPAM_DELAY;
         }
     }
+
+    return Plugin_Continue;
 }
 
 #endif

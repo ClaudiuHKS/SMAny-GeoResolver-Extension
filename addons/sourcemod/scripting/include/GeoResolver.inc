@@ -284,10 +284,10 @@ native  float   GeoR_Len(           const float     fLatitude1          ,   cons
 /**
  * RETURNS WHICH    MAXMIND® DATABASES ARE IN USE
  *
- * GR_Db nDb    =   GeoR_Databases();
+ * GR_Db xDb    =   GeoR_Databases();
  *
- * if (nDb      ==  GEOIP_NONE)         { ... }
- * if (nDb      &   GEOIP_ISP_PAID)     { ... }
+ * if (xDb      ==  GEOIP_NONE)         { ... }
+ * if (xDb      &   GEOIP_ISP_PAID)     { ... }
  *
  */
 
@@ -304,12 +304,12 @@ native  bool        GeoR_Refresh        ();
 native  bool        GeoR_Restart        ();
 
 /**
- * CHANGES  THE     ORDER   [ GEOIP_LITE_FIRST  |   GEOIP_PAID_FIRST ]
+ * CHANGES  THE     ORDER   [   GEOIP_LITE_FIRST    |       GEOIP_PAID_FIRST    ]
  */
 
-native  bool        GeoR_Order          (GR_Order   myOrder);
-native  bool        GeoR_SetOrder       (GR_Order   myOrder);
-native  bool        GeoR_ChangeOrder    (GR_Order   myOrder);
+native  bool        GeoR_Order          (const  GR_Order    xOrder  =   GEOIP_LITE_FIRST);
+native  bool        GeoR_SetOrder       (const  GR_Order    xOrder  =   GEOIP_LITE_FIRST);
+native  bool        GeoR_ChangeOrder    (const  GR_Order    xOrder  =   GEOIP_LITE_FIRST);
 
 /**
  * RETRIEVES    THE COUNTRY CODE BY IP ADDRESS
@@ -317,10 +317,10 @@ native  bool        GeoR_ChangeOrder    (GR_Order   myOrder);
 
 GR_Fun  int     GeoR_Code(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCode__);
@@ -332,10 +332,10 @@ GR_Fun  int     GeoR_Code(const char[] szIpAddr, char[] szBuffer, const int nSiz
 
 GR_Fun  int     GeoRT_Code(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCode__);
@@ -347,10 +347,10 @@ GR_Fun  int     GeoRT_Code(const char[] szIpAddr, char[] szBuffer, const int nSi
 
 GR_Fun  int     GeoR_Code3(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCode3__);
@@ -362,10 +362,10 @@ GR_Fun  int     GeoR_Code3(const char[] szIpAddr, char[] szBuffer, const int nSi
 
 GR_Fun  int     GeoRT_Code3(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCode3__);
@@ -377,10 +377,10 @@ GR_Fun  int     GeoRT_Code3(const char[] szIpAddr, char[] szBuffer, const int nS
 
 GR_Fun  int     GeoR_Country(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCountry__);
@@ -392,10 +392,10 @@ GR_Fun  int     GeoR_Country(const char[] szIpAddr, char[] szBuffer, const int n
 
 GR_Fun  int     GeoRT_Country(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCountry__);
@@ -407,10 +407,10 @@ GR_Fun  int     GeoRT_Country(const char[] szIpAddr, char[] szBuffer, const int 
 
 GR_Fun  int     GeoR_City(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCity__);
@@ -422,10 +422,10 @@ GR_Fun  int     GeoR_City(const char[] szIpAddr, char[] szBuffer, const int nSiz
 
 GR_Fun  int     GeoRT_City(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szCity__);
@@ -437,10 +437,10 @@ GR_Fun  int     GeoRT_City(const char[] szIpAddr, char[] szBuffer, const int nSi
 
 GR_Fun  int     GeoR_RegionCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szRegionCode__);
@@ -452,10 +452,10 @@ GR_Fun  int     GeoR_RegionCode(const char[] szIpAddr, char[] szBuffer, const in
 
 GR_Fun  int     GeoRT_RegionCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szRegionCode__);
@@ -467,10 +467,10 @@ GR_Fun  int     GeoRT_RegionCode(const char[] szIpAddr, char[] szBuffer, const i
 
 GR_Fun  int     GeoR_Region(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szRegion__);
@@ -482,10 +482,10 @@ GR_Fun  int     GeoR_Region(const char[] szIpAddr, char[] szBuffer, const int nS
 
 GR_Fun  int     GeoRT_Region(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szRegion__);
@@ -497,10 +497,10 @@ GR_Fun  int     GeoRT_Region(const char[] szIpAddr, char[] szBuffer, const int n
 
 GR_Fun  int     GeoR_TimeZone(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szTimeZone__);
@@ -512,10 +512,10 @@ GR_Fun  int     GeoR_TimeZone(const char[] szIpAddr, char[] szBuffer, const int 
 
 GR_Fun  int     GeoRT_TimeZone(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szTimeZone__);
@@ -527,10 +527,10 @@ GR_Fun  int     GeoRT_TimeZone(const char[] szIpAddr, char[] szBuffer, const int
 
 GR_Fun  int     GeoR_PostalCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szPostalCode__);
@@ -542,10 +542,10 @@ GR_Fun  int     GeoR_PostalCode(const char[] szIpAddr, char[] szBuffer, const in
 
 GR_Fun  int     GeoRT_PostalCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szPostalCode__);
@@ -557,10 +557,10 @@ GR_Fun  int     GeoRT_PostalCode(const char[] szIpAddr, char[] szBuffer, const i
 
 GR_Fun  int     GeoR_ContinentCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szContinentCode__);
@@ -572,10 +572,10 @@ GR_Fun  int     GeoR_ContinentCode(const char[] szIpAddr, char[] szBuffer, const
 
 GR_Fun  int     GeoRT_ContinentCode(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szContinentCode__);
@@ -587,10 +587,10 @@ GR_Fun  int     GeoRT_ContinentCode(const char[] szIpAddr, char[] szBuffer, cons
 
 GR_Fun  int     GeoR_Continent(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szContinent__);
@@ -602,10 +602,10 @@ GR_Fun  int     GeoR_Continent(const char[] szIpAddr, char[] szBuffer, const int
 
 GR_Fun  int     GeoRT_Continent(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szContinent__);
@@ -617,10 +617,10 @@ GR_Fun  int     GeoRT_Continent(const char[] szIpAddr, char[] szBuffer, const in
 
 GR_Fun  int     GeoR_AutonomousSysOrg(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szAutonomSysOrg__);
@@ -632,10 +632,10 @@ GR_Fun  int     GeoR_AutonomousSysOrg(const char[] szIpAddr, char[] szBuffer, co
 
 GR_Fun  int     GeoRT_AutonomousSysOrg(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szAutonomSysOrg__);
@@ -647,10 +647,10 @@ GR_Fun  int     GeoRT_AutonomousSysOrg(const char[] szIpAddr, char[] szBuffer, c
 
 GR_Fun  int     GeoR_ISP(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szIsp__);
@@ -662,10 +662,10 @@ GR_Fun  int     GeoR_ISP(const char[] szIpAddr, char[] szBuffer, const int nSize
 
 GR_Fun  int     GeoRT_ISP(const char[] szIpAddr, char[] szBuffer, const int nSize)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return strcopy(szBuffer, nSize, g_szIsp__);
@@ -677,10 +677,10 @@ GR_Fun  int     GeoRT_ISP(const char[] szIpAddr, char[] szBuffer, const int nSiz
 
 GR_Fun  float   GeoR_Latitude(const char[] szIpAddr)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return g_fLatitude__;
@@ -692,10 +692,10 @@ GR_Fun  float   GeoR_Latitude(const char[] szIpAddr)
 
 GR_Fun  float   GeoRT_Latitude(const char[] szIpAddr)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return g_fLatitude__;
@@ -707,10 +707,10 @@ GR_Fun  float   GeoRT_Latitude(const char[] szIpAddr)
 
 GR_Fun  float   GeoR_Longitude(const char[] szIpAddr)
 {
-    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoR_CompleteRecord(szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return g_fLongitude__;
@@ -722,10 +722,10 @@ GR_Fun  float   GeoR_Longitude(const char[] szIpAddr)
 
 GR_Fun  float   GeoRT_Longitude(const char[] szIpAddr)
 {
-    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof(g_szCode__), g_szCode3__, sizeof(g_szCode3__), g_szCountry__, sizeof(g_szCountry__),
-                        g_szCity__, sizeof(g_szCity__), g_szRegionCode__, sizeof(g_szRegionCode__), g_szRegion__, sizeof(g_szRegion__),
-                        g_szTimeZone__, sizeof(g_szTimeZone__), g_szPostalCode__, sizeof(g_szPostalCode__), g_szContinentCode__, sizeof(g_szContinentCode__),
-                        g_szContinent__, sizeof(g_szContinent__), g_szAutonomSysOrg__, sizeof(g_szAutonomSysOrg__), g_szIsp__, sizeof(g_szIsp__),
+    GeoRT_ReadIp(       szIpAddr, g_szCode__, sizeof (g_szCode__), g_szCode3__, sizeof (g_szCode3__), g_szCountry__, sizeof (g_szCountry__),
+                        g_szCity__, sizeof (g_szCity__), g_szRegionCode__, sizeof (g_szRegionCode__), g_szRegion__, sizeof (g_szRegion__),
+                        g_szTimeZone__, sizeof (g_szTimeZone__), g_szPostalCode__, sizeof (g_szPostalCode__), g_szContinentCode__, sizeof (g_szContinentCode__),
+                        g_szContinent__, sizeof (g_szContinent__), g_szAutonomSysOrg__, sizeof (g_szAutonomSysOrg__), g_szIsp__, sizeof (g_szIsp__),
                         g_fLatitude__, g_fLongitude__);
 
     return g_fLongitude__;
@@ -754,10 +754,10 @@ GR_Fun  float       GeoR_DistancePlrSrv(const int nPlayer,  const bool bImperial
 #endif
 
 {
-    static char     szPlrIpAddr[PLATFORM_MAX_PATH]          =   "",
-                    szSrvIpAddr[PLATFORM_MAX_PATH]          =   "";
+    static char     szPlrIpAddr[PLATFORM_MAX_PATH]          =   { EOS,  ... },
+                    szSrvIpAddr[PLATFORM_MAX_PATH]          =   { EOS,  ... };
 
-    static Handle   hSrvIpAddrConVar                        =   INVALID_HANDLE;
+    static Handle   xSrvIpAddrConVar                        =   INVALID_HANDLE;
 
     static bool     bSrvIpAddrConVarRetrieved               =   false;
 
@@ -783,33 +783,38 @@ GR_Fun  float       GeoR_DistancePlrSrv(const int nPlayer,  const bool bImperial
 
     if (false   ==  bSrvIpAddrConVarRetrieved)
     {
-        if (hSrvIpAddrConVar    ==  INVALID_HANDLE)
+        if (xSrvIpAddrConVar    ==  INVALID_HANDLE)
         {
-            hSrvIpAddrConVar    =   FindConVar("hostip");
+            xSrvIpAddrConVar    =   FindConVar("hostip");
         }
 
         bSrvIpAddrConVarRetrieved = true;
     }
 
-    if (hSrvIpAddrConVar    ==      INVALID_HANDLE)
+    if (xSrvIpAddrConVar    ==      INVALID_HANDLE)
     {
         return              0.0;
     }
 
-    nSrvIpAddrNum       =   GetConVarInt(hSrvIpAddrConVar);
+    nSrvIpAddrNum       =   GetConVarInt(xSrvIpAddrConVar);
 
     if (nSrvIpAddrNum   ==  0)
     {
         return              0.0;
     }
 
-    if (!GetClientIP(nPlayer,   szPlrIpAddr,        sizeof(szPlrIpAddr),    true))
+    if (!GetClientIP(nPlayer,   szPlrIpAddr,        sizeof (szPlrIpAddr),   true))
+    {
+        return              0.0;
+    }
+
+    if (-1 == StrContains(szPlrIpAddr, ".", false))
     {
         return              0.0;
     }
 
     FormatEx(   szSrvIpAddr                         ,
-                sizeof(szSrvIpAddr)                 ,
+                sizeof (szSrvIpAddr)                ,
                 "%u.%u.%u.%u"                       ,
                 (   nSrvIpAddrNum >> 24 )   & 0xFF  ,
                 (   nSrvIpAddrNum >> 16 )   & 0xFF  ,
