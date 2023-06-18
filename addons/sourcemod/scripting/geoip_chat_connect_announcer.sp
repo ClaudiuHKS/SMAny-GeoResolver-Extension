@@ -12,7 +12,7 @@ public  Plugin  myinfo  =
 };
 
 /**
- * PRINTS       " \x01Player\x04 HATTRİCK CARAMEL® HACK CS.MONEY\x01 joined."
+ * PRINTS       " \x01Player\x04 HATTRİCK CARAMEL® HACK CS.MONEY\x01 Joined"
  *
  * IF   THE     GEOGRAPHICAL    INFORMATION HAS NOT BEEN DETECTED
  *
@@ -135,49 +135,49 @@ public Action Timer_Join(Handle xTimer, any nUserId)
             {
                 if (bCountry        &&      bCity       &&      bIsp)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",    nUser, szCity,      szCountry);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s\x01,\x05 %s",         nUser, szCity,      szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry   &&      bCity)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01,\x05 %s\x01.",    nUser, szCity,      szCountry);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s\x01,\x05 %s",         nUser, szCity,      szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry   &&      bIsp)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].", nUser, szCountry,   szIsp);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s\x01 [\x05 %s\x01 ]",  nUser, szCountry,   szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCity      &&      bIsp)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01 [\x05 %s\x01 ].", nUser, szCity,      szIsp);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s\x01 [\x05 %s\x01 ]",  nUser, szCity,      szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                nUser, szCountry);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s",                     nUser, szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCity)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined from\x05 %s\x01.",                nUser, szCity);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined From\x05 %s",                     nUser, szCity);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bIsp)
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined [\x05 %s\x01 ].",                 nUser, szIsp);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined [\x05 %s\x01 ]",                  nUser, szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
@@ -186,7 +186,7 @@ public Action Timer_Join(Handle xTimer, any nUserId)
 
                 else
                 {
-                    PrintToChatAll(" \x01Player\x04 %N\x01 joined.",                                nUser);
+                    PrintToChatAll(" \x01Player\x04 %N\x01 Joined",                                 nUser);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
@@ -199,49 +199,49 @@ public Action Timer_Join(Handle xTimer, any nUserId)
             {
                 if (bCountry        &&      bCity       &&      bIsp)
                 {
-                    PrintToChatAll("Player %N joined from %s, %s.",     nUser, szCity,      szCountry);
+                    PrintToChatAll("Player %N Joined From %s, %s",      nUser, szCity,      szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry   &&      bCity)
                 {
-                    PrintToChatAll("Player %N joined from %s, %s.",     nUser, szCity,      szCountry);
+                    PrintToChatAll("Player %N Joined From %s, %s",      nUser, szCity,      szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry   &&      bIsp)
                 {
-                    PrintToChatAll("Player %N joined from %s [ %s ].",  nUser, szCountry,   szIsp);
+                    PrintToChatAll("Player %N Joined From %s [ %s ]",   nUser, szCountry,   szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCity      &&      bIsp)
                 {
-                    PrintToChatAll("Player %N joined from %s [ %s ].",  nUser, szCity,      szIsp);
+                    PrintToChatAll("Player %N Joined From %s [ %s ]",   nUser, szCity,      szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCountry)
                 {
-                    PrintToChatAll("Player %N joined from %s.",         nUser, szCountry);
+                    PrintToChatAll("Player %N Joined From %s",          nUser, szCountry);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bCity)
                 {
-                    PrintToChatAll("Player %N joined from %s.",         nUser, szCity);
+                    PrintToChatAll("Player %N Joined From %s",          nUser, szCity);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
 
                 else if (bIsp)
                 {
-                    PrintToChatAll("Player %N joined [ %s ].",          nUser, szIsp);
+                    PrintToChatAll("Player %N Joined [ %s ]",           nUser, szIsp);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
@@ -250,7 +250,7 @@ public Action Timer_Join(Handle xTimer, any nUserId)
 
                 else
                 {
-                    PrintToChatAll("Player %N joined.",                 nUser);
+                    PrintToChatAll("Player %N Joined",                  nUser);
 
                     g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                 }
@@ -282,7 +282,7 @@ public Action OnUserLeave_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
 
 #if defined SHOW_PLAYER_DISCONNECT_CHAT
 
-    static Handle hPack = INVALID_HANDLE;
+    static Handle xPack = INVALID_HANDLE;
     static char szName[PLATFORM_MAX_PATH] = { EOS, ... }, szReason[PLATFORM_MAX_PATH] = { EOS, ... }, szRandom[PLATFORM_MAX_PATH] = { EOS, ... };
 
     if (EOS == szRandom[0])
@@ -314,14 +314,14 @@ public Action OnUserLeave_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
                 {
                     if (strcmp(szReason, szRandom, false))
                     {
-                        hPack = CreateDataPack();
+                        xPack = CreateDataPack();
                         {
-                            if (hPack != INVALID_HANDLE)
+                            if (xPack != INVALID_HANDLE)
                             {
-                                WritePackString(hPack, szName);
-                                WritePackString(hPack, szReason);
+                                WritePackString(xPack, szName);
+                                WritePackString(xPack, szReason);
 
-                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Leave, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Leave, xPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
                             }
                         }
                     }
@@ -341,7 +341,7 @@ public Action OnUserTeam_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
 
 #if defined SHOW_PLAYER_TEAM_CHAT
 
-    static Handle hPack = INVALID_HANDLE;
+    static Handle xPack = INVALID_HANDLE;
     static int nUserId = 0, nTeam = 0;
 
 #endif
@@ -363,14 +363,14 @@ public Action OnUserTeam_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
                 {
                     if (nTeam > 0)
                     {
-                        hPack = CreateDataPack();
+                        xPack = CreateDataPack();
                         {
-                            if (hPack != INVALID_HANDLE)
+                            if (xPack != INVALID_HANDLE)
                             {
-                                WritePackCell(hPack, nUserId);
-                                WritePackCell(hPack, nTeam);
+                                WritePackCell(xPack, nUserId);
+                                WritePackCell(xPack, nTeam);
 
-                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Team, hPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
+                                CreateTimer(GetRandomFloat(0.100000, 1.500000), Timer_Team, xPack, TIMER_FLAG_NO_MAPCHANGE | TIMER_DATA_HNDL_CLOSE);
                             }
                         }
                     }
@@ -387,19 +387,19 @@ public Action OnUserTeam_Pre(Handle xEv, const char[] szEvName, bool bEvNoBC)
 
 #if defined SHOW_PLAYER_TEAM_CHAT
 
-public Action Timer_Team(Handle xTimer, any hPack)
+public Action Timer_Team(Handle xTimer, any xPack)
 {
     static int nUserId = 0, nUser = 0, nTeam = 0;
     static char szIpAddr[PLATFORM_MAX_PATH] = { EOS, ... };
     static float fEngTime = 0.0;
 
-    if (hPack != INVALID_HANDLE)
+    if (xPack != INVALID_HANDLE)
     {
         if ((fEngTime = GetEngineTime()) > g_fStamp)
         {
-            ResetPack(hPack);
+            ResetPack(xPack);
             {
-                if ((nUserId = ReadPackCell(hPack)) > -1)
+                if ((nUserId = ReadPackCell(xPack)) > -1)
                 {
                     if ((nUser = GetClientOfUserId(nUserId)) > 0 && nUser <= MaxClients)
                     {
@@ -407,7 +407,7 @@ public Action Timer_Team(Handle xTimer, any hPack)
                             !IsClientReplay(nUser) && !IsClientInKickQueue(nUser) && !IsClientTimingOut(nUser) &&
                             GetClientIP(nUser, szIpAddr, sizeof (szIpAddr), true) && -1 != StrContains(szIpAddr, ".", false))
                         {
-                            if ((nTeam = ReadPackCell(hPack)) > 0)
+                            if ((nTeam = ReadPackCell(xPack)) > 0)
                             {
                                 if (g_xEngVs == Engine_CSGO)
                                 {
@@ -415,21 +415,21 @@ public Action Timer_Team(Handle xTimer, any hPack)
                                     {
                                         case 1:
                                         {
-                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x08 SPECTATOR\x01.",            nUser);
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 Became A\x08 SPECTATOR",         nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 2:
                                         {
-                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x07 TERRORIST\x01.",            nUser);
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 Became A\x07 TERRORIST",         nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 3:
                                         {
-                                            PrintToChatAll(" \x01Player\x05 %N\x01 became a\x0B COUNTER TERRORIST\x01.",    nUser);
+                                            PrintToChatAll(" \x01Player\x05 %N\x01 Became A\x0B COUNTER TERRORIST", nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
@@ -442,21 +442,21 @@ public Action Timer_Team(Handle xTimer, any hPack)
                                     {
                                         case 1:
                                         {
-                                            PrintToChatAll("Player %N became a SPECTATOR.",         nUser);
+                                            PrintToChatAll("Player %N Became A SPECTATOR",          nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 2:
                                         {
-                                            PrintToChatAll("Player %N became a TERRORIST.",         nUser);
+                                            PrintToChatAll("Player %N Became A TERRORIST",          nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 3:
                                         {
-                                            PrintToChatAll("Player %N became a COUNTER TERRORIST.", nUser);
+                                            PrintToChatAll("Player %N Became A COUNTER TERRORIST",  nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
@@ -469,21 +469,21 @@ public Action Timer_Team(Handle xTimer, any hPack)
                                     {
                                         case 1:
                                         {
-                                            PrintToChatAll("Player %N became a SPECTATOR.",     nUser);
+                                            PrintToChatAll("Player %N Became A SPECTATOR",      nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 2:
                                         {
-                                            PrintToChatAll("Player %N joined the US ARMY.",     nUser);
+                                            PrintToChatAll("Player %N Joined The US ARMY",      nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 3:
                                         {
-                                            PrintToChatAll("Player %N joined the WEHRMACHT.",   nUser);
+                                            PrintToChatAll("Player %N Joined The WEHRMACHT",    nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
@@ -496,21 +496,21 @@ public Action Timer_Team(Handle xTimer, any hPack)
                                     {
                                         case 1:
                                         {
-                                            PrintToChatAll("Player %N became a SPECTATOR.", nUser);
+                                            PrintToChatAll("Player %N Became A SPECTATOR",  nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 2:
                                         {
-                                            PrintToChatAll("Player %N joined the TEAM #1.", nUser);
+                                            PrintToChatAll("Player %N Joined The TEAM #1",  nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
 
                                         case 3:
                                         {
-                                            PrintToChatAll("Player %N joined the TEAM #2.", nUser);
+                                            PrintToChatAll("Player %N Joined The TEAM #2",  nUser);
 
                                             g_fStamp = fEngTime + CHAT_SPAM_DELAY;
                                         }
@@ -531,20 +531,97 @@ public Action Timer_Team(Handle xTimer, any hPack)
 
 #if defined SHOW_PLAYER_DISCONNECT_CHAT
 
-public Action Timer_Leave(Handle xTimer, any hPack)
+static int FixLine(char[] szItm, int nMax)
+{
+    static int nItr = 0, nLen = 0, nChr = 0, nSze = 0;
+    static char szTmp[PLATFORM_MAX_PATH] = { EOS, ... }, cTmp = EOS;
+
+    if (nMax < 1)
+    {
+        szItm[0] = EOS;
+        return 0;
+    }
+
+    nLen = strlen(szItm);
+
+    if (nLen < 1)
+    {
+        szItm[0] = EOS;
+        return 0;
+    }
+
+    for (nItr = 0, nChr = 0, cTmp = ' ', nSze = sizeof (szTmp); ((nItr < nLen) && (nChr < nSze) && (nChr < nMax)); nItr++)
+    {
+        if (szItm[nItr] == '\n' || szItm[nItr] == '\r' || szItm[nItr] == '\v' || szItm[nItr] == '\f' || szItm[nItr] == '\a' || szItm[nItr] == '\b')
+        {
+            continue;
+        }
+
+        if (szItm[nItr] == '\t')
+        {
+            szItm[nItr] = ' ';
+        }
+
+        if (szItm[nItr] != ' ' || cTmp != ' ')
+        {
+            szTmp[nChr++] = szItm[nItr];
+
+            cTmp = szItm[nItr];
+        }
+    }
+
+    if (nChr < 1)
+    {
+        szItm[0] = EOS;
+        return 0;
+    }
+
+    szTmp[nChr] = EOS;
+
+    if (szTmp[nChr - 1] == ' ')
+    {
+        szTmp[--nChr] = EOS;
+    }
+
+    if (nChr < 1)
+    {
+        szItm[0] = EOS;
+        return 0;
+    }
+
+    if (nMax <= nChr)
+    {
+        nChr = nMax;
+
+        if (szTmp[nChr - 1] == ' ')
+        {
+            szTmp[--nChr] = EOS;
+        }
+
+        if (nChr < 1)
+        {
+            szItm[0] = EOS;
+            return 0;
+        }
+    }
+
+    return strcopy(szItm, nMax, szTmp);
+}
+
+public Action Timer_Leave(Handle xTimer, any xPack)
 {
     static char szName[PLATFORM_MAX_PATH] = { EOS, ... }, szReason[PLATFORM_MAX_PATH] = { EOS, ... }, szNewReason[PLATFORM_MAX_PATH] = { EOS, ... };
     static float fEngTime = 0.0;
     static int nIter = 0, nReasonLen = 0, nNewReasonLen = 0;
 
-    if (hPack != INVALID_HANDLE)
+    if (xPack != INVALID_HANDLE)
     {
         if ((fEngTime = GetEngineTime()) > g_fStamp)
         {
-            ResetPack(hPack);
+            ResetPack(xPack);
             {
-                ReadPackString(hPack, szName,   sizeof (szName));
-                ReadPackString(hPack, szReason, sizeof (szReason));
+                ReadPackString(xPack, szName,   sizeof (szName));
+                ReadPackString(xPack, szReason, sizeof (szReason));
 
                 if (Engine_CSGO == g_xEngVs)
                 {
@@ -552,16 +629,16 @@ public Action Timer_Leave(Handle xTimer, any hPack)
                     {
                         case 0:
                         {
-                            PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
+                            PrintToChatAll(" \x01Player\x05 %s\x01 Flew Away", szName);
                         }
 
                         default:
                         {
                             for (nIter = 0, nNewReasonLen = 0; nIter < nReasonLen; nIter++)
                             {
-                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]))
+                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]) || IsCharMB(szReason[nIter]) > 0)
                                 {
-                                    szNewReason[nNewReasonLen++] = CharToLower(szReason[nIter]);
+                                    szNewReason[nNewReasonLen++] = CharToUpper(szReason[nIter]);
                                 }
                             }
 
@@ -569,27 +646,21 @@ public Action Timer_Leave(Handle xTimer, any hPack)
                             {
                                 szNewReason[nNewReasonLen] = EOS;
                                 {
-                                    ReplaceString(szNewReason, sizeof (szNewReason), "  ", " ", false);
+                                    if (FixLine(szNewReason, sizeof (szNewReason)) > 0)
                                     {
-                                        TrimString(szNewReason);
-                                        {
-                                            if (strlen(szNewReason) > 0)
-                                            {
-                                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away,\x09 %s\x01.", szName, szNewReason);
-                                            }
+                                        PrintToChatAll(" \x01Player\x05 %s\x01 Flew Away,\x09 %s", szName, szNewReason);
+                                    }
 
-                                            else
-                                            {
-                                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
-                                            }
-                                        }
+                                    else
+                                    {
+                                        PrintToChatAll(" \x01Player\x05 %s\x01 Flew Away", szName);
                                     }
                                 }
                             }
 
                             else
                             {
-                                PrintToChatAll(" \x01Player\x05 %s\x01 flew away.", szName);
+                                PrintToChatAll(" \x01Player\x05 %s\x01 Flew Away", szName);
                             }
                         }
                     }
@@ -601,16 +672,16 @@ public Action Timer_Leave(Handle xTimer, any hPack)
                     {
                         case 0:
                         {
-                            PrintToChatAll("Player %s flew away.", szName);
+                            PrintToChatAll("Player %s Flew Away", szName);
                         }
 
                         default:
                         {
                             for (nIter = 0, nNewReasonLen = 0; nIter < nReasonLen; nIter++)
                             {
-                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]))
+                                if (szReason[nIter] == ' ' || IsCharAlpha(szReason[nIter]) || IsCharNumeric(szReason[nIter]) || IsCharMB(szReason[nIter]) > 0)
                                 {
-                                    szNewReason[nNewReasonLen++] = CharToLower(szReason[nIter]);
+                                    szNewReason[nNewReasonLen++] = CharToUpper(szReason[nIter]);
                                 }
                             }
 
@@ -618,27 +689,21 @@ public Action Timer_Leave(Handle xTimer, any hPack)
                             {
                                 szNewReason[nNewReasonLen] = EOS;
                                 {
-                                    ReplaceString(szNewReason, sizeof (szNewReason), "  ", " ", false);
+                                    if (FixLine(szNewReason, sizeof (szNewReason)) > 0)
                                     {
-                                        TrimString(szNewReason);
-                                        {
-                                            if (strlen(szNewReason) > 0)
-                                            {
-                                                PrintToChatAll("Player %s flew away, %s.", szName, szNewReason);
-                                            }
+                                        PrintToChatAll("Player %s Flew Away, %s", szName, szNewReason);
+                                    }
 
-                                            else
-                                            {
-                                                PrintToChatAll("Player %s flew away.", szName);
-                                            }
-                                        }
+                                    else
+                                    {
+                                        PrintToChatAll("Player %s Flew Away", szName);
                                     }
                                 }
                             }
 
                             else
                             {
-                                PrintToChatAll("Player %s flew away.", szName);
+                                PrintToChatAll("Player %s Flew Away", szName);
                             }
                         }
                     }
